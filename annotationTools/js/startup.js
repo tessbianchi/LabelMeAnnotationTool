@@ -221,7 +221,7 @@ function StartupDisplayFolders()
     window.localStorage.dir = dir;
     window.localStorage.images = images;
     window.localStorage.index = index;
-    var c = "http://milturks.com/label/tool.html" + '?folder=' + dir + "&image=" + images[0];
+    var c = website_ns + '?folder=' + dir + "&image=" + images[0];
     window.location = c;
 
   });

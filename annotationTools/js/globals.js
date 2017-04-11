@@ -46,6 +46,8 @@ var index = 0;
 // URL of XHTML namespace. This is needed for generating SVG elements.
 var xhtmlNS = 'http://www.w3.org/1999/xhtml';
 
+var website_ns = "http://milturks.com/label/tool.html";
+
 // Website that refers to LabelMe:
 var ref;
 

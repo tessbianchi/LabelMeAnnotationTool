@@ -352,7 +352,7 @@ function file_info() {
         this.dir_name = dir
         this.im_name = images[index];
 
-        var c = "http://milturks.com/label/tool.html" + '?folder=' + dir + "&image=" + images[index];
+        var c = website_ns + '?folder=' + dir + "&image=" + images[index];
         window.location.href = c;
         
         // // branch for native XMLHttpRequest object
