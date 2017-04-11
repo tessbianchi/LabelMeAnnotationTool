@@ -54,10 +54,10 @@ function handler() {
     // Submits the object label in response to the edit/delete popup bubble.
     this.SubmitEditLabel = function () {
 
-      if (scribble_canvas.scribblecanvas){
-        scribble_canvas.annotationid = -1;
-        scribble_canvas.cleanscribbles();
-      } 
+      // if (scribble_canvas.scribblecanvas){
+      //   scribble_canvas.annotationid = -1;
+      //   scribble_canvas.cleanscribbles();
+      // } 
       submission_edited = 1;
       var anno = select_anno;
       
@@ -351,11 +351,11 @@ function handler() {
       /*************************************************************/
       /*************************************************************/
       // Scribble: Clean scribbles.
-      if(anno.GetType() == 1) {
-      	scribble_canvas.cleanscribbles();
-      	scribble_canvas.scribble_image = "";
-      	scribble_canvas.colorseg = Math.floor(Math.random()*14);
-      }
+      // if(anno.GetType() == 1) {
+      // 	scribble_canvas.cleanscribbles();
+      // 	scribble_canvas.scribble_image = "";
+      // 	scribble_canvas.colorseg = Math.floor(Math.random()*14);
+      // }
       /*************************************************************/
       /*************************************************************/
 

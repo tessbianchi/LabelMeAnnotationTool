@@ -1,4 +1,3 @@
-/** @file Contains the global variables used in LabelMe. */
 
 // Parsed LabelMe XML file. Manipulate this variable with jquery.
 var LM_xml;
@@ -37,6 +36,13 @@ var main_canvas;
 // Holds image.
 var main_media;
 
+// Holds the base image;
+var dir; 
+
+var images;
+
+var index = 0;
+
 // URL of XHTML namespace. This is needed for generating SVG elements.
 var xhtmlNS = 'http://www.w3.org/1999/xhtml';
 
@@ -48,7 +54,7 @@ var drawing_mode = 0;
 
 
 // Scribble mode:
-var scribble_mode = true;
+var scribble_mode = false;
 var threed_mode = false;
 var video_mode = false;
 var bounding_box = false;

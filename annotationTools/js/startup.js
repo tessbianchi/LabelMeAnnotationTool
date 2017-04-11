@@ -3,6 +3,8 @@
 /** Main entry point for the annotation tool. */
 function StartupLabelMe() {
   console.time('startup');
+  console.log("hello");
+  console.log(document.URL);
 
   // Check browser:
   GetBrowserInfo();
@@ -27,7 +29,9 @@ function StartupLabelMe() {
     // annotation folder or image filename.  If false is returned, the 
     // function fetches a new image and sets the URL to reflect the 
     // fetched image.
-    if(!main_media.GetFileInfo().ParseURL()) return;
+    var g = main_media.GetFileInfo().ParseURL()
+    console.log("asdfsdf" + g)
+    if(!g) return;
 
     if(video_mode) {
       $('#generic_buttons').remove();
@@ -56,12 +60,15 @@ function StartupLabelMe() {
       // Read the XML annotation file:
       var anno_file = main_media.GetFileInfo().GetFullName();
       anno_file = 'Annotations/' + anno_file.substr(0,anno_file.length-4) + '.xml' + '?' + Math.random();
+      console.log("ANNOTATION" + anno_file);
       ReadXML(anno_file,LoadAnnotationSuccess,LoadAnnotation404);
       main_media.GetFileInfo().PreFetchImage();
           };
 
       // Get the image:
       main_media.GetNewImage(main_media_onload_helper);
+      // console.log("dir" + dir);
+      // main_media.GetSpecificImage("1", "boat1.jpg", main_media_onload_helper);
     }
   }
   else {
@@ -70,6 +77,7 @@ function StartupLabelMe() {
     $('html').append('<body><p><img src="Icons/LabelMe.gif" /></p><br /><p>Sorry!  This page only works with Mozilla Firefox, Chrome, and Internet Explorer.  We may support other browsers in the future.</p><p><a href="http://www.mozilla.org">Download Mozilla Firefox?</a></p></body>');
   }
 }
+
 function LoadNewMedia(){
 	
       main_canvas = new canvas('myCanvas_bg');
@@ -80,6 +88,8 @@ function LoadNewMedia(){
 	      // Read the XML annotation file:
 	      var anno_file = main_media.GetFileInfo().GetFullName();
 	      anno_file = 'Annotations/' + anno_file.substr(0,anno_file.length-4) + '.xml' + '?' + Math.random();
+        console.log("ANNOTATION" + anno_file);
+
 	      ReadXML(anno_file,LoadAnnotationSuccess,LoadAnnotation404);
 	      main_media.Zoom('fitted');
 	      main_media.GetFileInfo().PreFetchImage();
@@ -126,8 +136,97 @@ function LoadAnnotationSuccess(xml) {
   // Finish the startup scripts:
  FinishStartup();
    
-
 }
+
+
+function StartupDisplayFolders()
+{
+  var url = 'annotationTools/perl/fetch_dirs.cgi';
+  var im_req;
+  if (window.XMLHttpRequest) {
+      im_req = new XMLHttpRequest();
+      im_req.open("GET", url, false);
+      im_req.send('');
+  }
+  var txt = im_req.responseText;
+  console.log(txt)
+  objects = txt.split(" ");
+  var stuff = {};
+  var data = [];
+  for(var o in objects)
+  {
+    var o = objects[o];
+    if(o === "")
+    {
+      continue;
+    }
+    var folders = o.split("/");
+    parent = ""
+    for(var i = 0; i != folders.length - 2; i+=1)
+    {
+      parent += "/" + folders[i];
+    }
+    curr_id = parent + "/" + folders[folders.length - 2];
+    if(parent === "")
+    {
+      parent = "#";
+    }
+
+    if(!(curr_id in stuff))
+    {
+      console.log("!");
+      var obj = {};
+      console.log(curr_id);
+      obj["id"] = curr_id;
+      obj["parent"] = parent;
+      obj["text"] = folders[folders.length - 2];
+      stuff[curr_id] = [];
+      stuff[curr_id].push(folders[folders.length - 1]);
+      data.push(obj);
+    }else{
+      stuff[curr_id].push(folders[folders.length - 1]);
+    }
+
+    if(!(parent in stuff))
+    {
+      console.log(curr_id);
+      var obj1 = {};
+      obj1["id"] = parent;
+      obj1["parent"] = "#";
+      obj1["text"] = folders[folders.length - 3];
+      stuff[parent] = true;
+      data.push(obj1);
+    }
+    
+  }
+  console.log(data)
+  $('#jstree').jstree({ 'core' : {
+    'data' : data
+    } 
+  });
+   console.log(stuff);
+   $('button').on('click', function () {
+    console.log("NAVIFGATE");
+    var selected = $('#jstree').jstree(true).get_selected();
+    images = stuff[selected[0]];
+    
+    if(images[0] === undefined)
+    {
+     alert("WRONG!");
+     return; 
+    }
+    index = 0;
+    dir = selected[0].substring(1);
+    images = images.sort();
+    window.localStorage.dir = dir;
+    window.localStorage.images = images;
+    window.localStorage.index = index;
+    var c = "http://milturks.com/label/tool.html" + '?folder=' + dir + "&image=" + images[0];
+    window.location = c;
+
+  });
+}
+
 
 /** Sets AllAnnotations array from LM_xml */
 function SetAllAnnotationsArray() {
@@ -189,6 +288,7 @@ function LoadAnnotation404(jqXHR,textStatus,errorThrown) {
     alert(jqXHR.status);
 }
 
+
 /** Annotation template does not exist for this folder, so load default */
 function LoadTemplate404(jqXHR,textStatus,errorThrown) {
   if(jqXHR.status==404)
@@ -205,6 +305,7 @@ function LoadTemplate404(jqXHR,textStatus,errorThrown) {
 function LoadTemplateSuccess(xml) {
   // Set global variable:
   LM_xml = xml;
+  console.log("LOADING TEMPLATE");
 
   // Set folder and image filename:
   LM_xml.getElementsByTagName("filename")[0].firstChild.nodeValue = '\n'+main_media.GetFileInfo().GetImName()+'\n';
@@ -232,6 +333,7 @@ function FinishStartup() {
   $('#changeuser').attr("onclick","javascript:show_enterUserNameDIV(); return false;");
   $('#userEnter').attr("onkeyup","javascript:var c; if(event.keyCode)c=event.keyCode; if(event.which)c=event.which; if(c==13 || c==27) changeAndDisplayUserName(c);");
   $('#xml_url').attr("onclick","javascript:GetXMLFile();");
+  $('#prevImage').attr("onclick","javascript:ShowPrevImage()");
   $('#nextImage').attr("onclick","javascript:ShowNextImage()");
   $('#lessContrast').attr("onclick","javascript:main_media.AugmentContrast()");
   $('#moreContrast').attr("onclick","javascript:main_media.ReduceContrast()");
@@ -291,15 +393,15 @@ function InitializeAnnotationTools(tag_button, tag_canvas){
     html_str += '</div>';
 
     if (!video_mode){
-      html_str += '<div id= "segmDiv" class="annotatemenu">Mask<br></br>Tool \
-        <button id="ScribbleObj" class="labelBtnDraw" type="button" title="Use the red pencil to mark areas inside the object you want to segment" onclick="scribble_canvas.setCurrentDraw(OBJECT_DRAWING)" > \
-        <img src="Icons/object.png" width="28" height="38" /></button> \
-        <button id="ScribbleBg" class="labelBtnDraw" type="button" title="Use the blue pencil to mark areas outside the object" onclick="scribble_canvas.setCurrentDraw(BG_DRAWING)" > \
-        <img src="Icons/background.png" width="28" height="38" /></button> \
-        <button id="ScribbleRubber" class="labelBtnDraw" type="button" title="ScribbleRubber" onclick="scribble_canvas.setCurrentDraw(RUBBER_DRAWING)" > \
-        <img src="Icons/erase.png" width="28" height="38" /> \
-        </button><input type="button" class="segbut"  id="donebtn" value="Done" title="Press this button after you are done with the scribbling." onclick="scribble_canvas.segmentImage(1)"/> \
-        <p> </p><div id="loadspinner" style="display: none;"><img src="Icons/segment_loader.gif"/> </div></div>';
+      // html_str += '<div id= "segmDiv" class="annotatemenu">Mask<br></br>Tool \
+      //   <button id="ScribbleObj" class="labelBtnDraw" type="button" title="Use the red pencil to mark areas inside the object you want to segment" onclick="scribble_canvas.setCurrentDraw(OBJECT_DRAWING)" > \
+      //   <img src="Icons/object.png" width="28" height="38" /></button> \
+      //   <button id="ScribbleBg" class="labelBtnDraw" type="button" title="Use the blue pencil to mark areas outside the object" onclick="scribble_canvas.setCurrentDraw(BG_DRAWING)" > \
+      //   <img src="Icons/background.png" width="28" height="38" /></button> \
+      //   <button id="ScribbleRubber" class="labelBtnDraw" type="button" title="ScribbleRubber" onclick="scribble_canvas.setCurrentDraw(RUBBER_DRAWING)" > \
+      //   <img src="Icons/erase.png" width="28" height="38" /> \
+      //   </button><input type="button" class="segbut"  id="donebtn" value="Done" title="Press this button after you are done with the scribbling." onclick="scribble_canvas.segmentImage(1)"/> \
+      //   <p> </p><div id="loadspinner" style="display: none;"><img src="Icons/segment_loader.gif"/> </div></div>';
      
 
       var html_str2 = '<button xmlns="http://www.w3.org/1999/xhtml" id="img_url" class="labelBtn" type="button" title="Download Pack" onclick="javascript:GetPackFile();"> \

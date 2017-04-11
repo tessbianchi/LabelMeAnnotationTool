@@ -12,6 +12,10 @@ function StartDrawEvent(event) {
   
   // Write message to the console:
   console.log('LabelMe: Starting draw event...');
+  if(IsUserAnonymous())
+  {
+    alert("Please enter your name before you begin drawing polygons.");
+  }
 
   // If we are hiding all polygons, then clear the main canvas:
   if(IsHidingAllPolygons) {

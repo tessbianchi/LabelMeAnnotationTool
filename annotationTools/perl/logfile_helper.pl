@@ -167,5 +167,4 @@ sub InsertImageSize {
 
     return ($stdin);
 }
-
 1;

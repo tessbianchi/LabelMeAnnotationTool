@@ -17,6 +17,17 @@ RewriteCond %{REQUEST_FILENAME} .*\.html
 RewriteRule ^.*$ - "[T=text/html,L]"
 </Files>
 
+<Files "index.html">
+AddType application/xhtml+xml html
+AddHandler server-parsed .html
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_ACCEPT} !application/xhtml\+xml
+RewriteCond %{HTTP_ACCEPT} (text/html|\*/\*)
+RewriteCond %{REQUEST_FILENAME} .*\.html
+RewriteRule ^.*$ - "[T=text/html,L]"
+</Files>
+
 <Files "unit_tests.html">
 AddType application/xhtml+xml html
 AddHandler server-parsed .html
@@ -29,4 +40,3 @@ RewriteRule ^.*$ - "[T=text/html,L]"
 </Files>
 
 RewriteEngine on
-RewriteRule ^index\.html$ index.php 

@@ -63,7 +63,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 </style>
 
 </head>
-
 <!-- Start up LabelMe after HTML elements load -->
 <body id="body" style="visibility:hidden;" onload="javascript:StartupLabelMe();">
 
@@ -73,10 +72,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <!-- HEADER AND LOGO -->  
   <div class="header" id="header">
     <!-- LOGO-->
-    <div id="logo">
-      <a href="index.html"><img src="Icons/LabelMe_logo3.png" width="216" height="69" alt="LabelMe logo"></img></a>
+    <a href="index.html">
+    <div id="logo" style="width: 300px">
+      <img src="Icons/mil.png" width="50" height="50" style=" position: relative; top:-15px; mix-blend-mode: multiply;"></img>
+      <img src="Icons/LabelMe_logo3.png" width="216" height="69" alt="LabelMe logo"></img>
     </div>
-    
+    </a>    
     <!-- USERNAME FORM-->
     <div id="username_main_div">
       <div id="display_user" style="display:block;">
@@ -93,9 +94,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   </div>
   
   <!-- BUTTONS -->
-  <div id="tool_buttons">
+  <div id="tool_buttons" >
     <!-- NAVIGATION BUTTONS  -->
-    <div id="label_buttons_navigation">
+    <div id="label_buttons_navigation" style="margin-left: 50px">
       <!-- DOWNLOAD IMAGE BUTTON -->
       <button id="img_url" class="labelBtn" type="button" title="Download image">
         <img src="Icons/download_img.png"  height="30" />
@@ -110,13 +111,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       <button id="help" class="labelBtn" type="button" title="Show help page" onclick="location.href='annotationTools/html/labeling_instructions.html'" >
         <img src="Icons/help_new.png"  height="30" />
       </button>
+
+       <!-- NEXT IMAGE BUTTON -->
+      <button id="prevImage" class="labelBtn" type="button" title="Prev Image">
+        <img src="Icons/next_2.png" height="30" style="transform: rotate(180deg)"/>
+      </button>
       
       <!-- NEXT IMAGE BUTTON -->
       <button id="nextImage" class="labelBtn" type="button" title="Next Image">
         <img src="Icons/next_2.png" height="30" />
       </button>
+    
     </div>
-    <div id="label_buttons_contrast">
+    <div id="label_buttons_contrast" style="margin-left: 100px">
 
       <button id="lessContrast" class="labelBtn" type="button" title="Decrease Brightness">
         <img src="Icons/morecontrast.png" height="30" />

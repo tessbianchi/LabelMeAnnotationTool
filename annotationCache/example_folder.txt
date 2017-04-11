@@ -1,3 +1,5 @@
 example_folder,img1.jpg
 example_folder,img2.jpg
 example_folder,img3.jpg
+1,boat1.jpg
+1/2,boat2.jpg

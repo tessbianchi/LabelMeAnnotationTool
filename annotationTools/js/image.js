@@ -54,6 +54,13 @@ function image(id) {
         wait_for_input = 0;
         edit_popup_open = 0;
     };
+
+    this.GetSpecificImage = function(dirname, filename, onload_helper)
+    {
+        this.file_info.SetDirName(dirname);
+        this.file_info.SetImName(filename);
+        this.GetNewImage(onload_helper);
+    }
     
     /** Returns the ratio of the available width/height to the original
      width/height.

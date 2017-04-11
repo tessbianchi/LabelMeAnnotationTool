@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC
+"-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:svg="http://www.w3.org/2000/svg" 
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+<title>LabelMe: The open annotation tool</title>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE,NO-STORE,MUST-REVALIDATE" />
+<META HTTP-EQUIV="imagetoolbar" CONTENT="no" />
+<link rel="shortcut icon" href="Icons/favicon16.ico" />
+
+<script type="text/javascript">
+// <![CDATA[
+<!--#include virtual="./annotationTools/js/jquery-1.9.1.js" -->
+<!--#include virtual="./annotationTools/js/jquery-ui.js" -->
+<!--#include virtual="./annotationTools/js/jquery-ui-intervals.js" -->
+<!--#include virtual="./annotationTools/js/example.js" -->
+<!--#include virtual="./annotationTools/js/browser.js" -->  
+<!--#include virtual="./annotationTools/js/globals.js" -->
+<!--#include virtual="./annotationTools/js/io.js" -->
+<!--#include virtual="./annotationTools/js/plot.js" -->
+<!--#include virtual="./annotationTools/js/my_scripts.js" -->
+<!--#include virtual="./annotationTools/js/object_list.js" -->
+<!--#include virtual="./annotationTools/js/object_parts.js" -->
+<!--#include virtual="./annotationTools/js/bubble.js" -->
+<!--#include virtual="./annotationTools/js/image.js" -->
+<!--#include virtual="./annotationTools/js/file_info.js" -->
+<!--#include virtual="./annotationTools/js/annotation.js" -->
+<!--#include virtual="./annotationTools/js/canvas.js" -->
+<!--#include virtual="./annotationTools/js/handler.js" -->
+<!--#include virtual="./annotationTools/js/sign_in.js" -->
+<!--#include virtual="./annotationTools/js/startup.js" -->
+<!--#include virtual="./annotationTools/js/player.js" -->
+<!--#include virtual="./annotationTools/js/video.js" -->
+<!--#include virtual="./annotationTools/js/draw_event.js" -->
+<!--#include virtual="./annotationTools/js/edit_event.js" -->
+<!--#include virtual="./annotationTools/js/adjust_event.js" -->
+<!--#include virtual="./annotationTools/js/scribble.js" -->
+<!--#include virtual="./annotationTools/js/xml_accessors.js" -->
+// ]]>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<style>
+@import url("annotationTools/css/styles.css?version=4");
+@import url("annotationTools/css/header.css?version=4");
+@import url("annotationTools/css/bubble.css?version=4");
+@import url("annotationTools/css/object_list.css?version=4");
+@import url("annotationTools/css/scribblemenu.css?version=4");
+@import url("annotationTools/css/jquery-ui.css");
+</style>
+<link rel="stylesheet" href="dist/themes/default/style.min.css" />
+
+</head>
+
+<!-- Start up LabelMe after HTML elements load -->
+<body id="body" onload="javascript:StartupDisplayFolders();">
+
+
+
+
+  <!-- HEADER AND LOGO -->  
+  <div class="header" id="header">
+    <!-- LOGO-->
+   <a href="index.html">
+    <div id="logo" style="width: 300px">
+      <img src="Icons/mil.png" width="50" height="50" style=" position: relative; top:-15px; mix-blend-mode: multiply;"></img>
+      <img src="Icons/LabelMe_logo3.png" width="216" height="69" alt="LabelMe logo"></img>
+    </div>
+    </a>   
+    <!-- USERNAME FORM-->
+    <div id="username_main_div">
+      <div id="display_user" style="display:block;">
+        You are:
+        <b><span id="usernametxt" type="text" style="max-width:120px; height:1.2em;" tabindex="0" title="This username will get associated to each new polygon inside the XML.">anonymous
+        </span></b>
+        <font size="-2">(<a href="#" id="changeuser" title="Click to change the username1" onclick="javascript:show_enterUserNameDIV(); return false;">change user</a>)</font>
+      </div>
+      <div id="enterUserName" style="display:none;">
+        Enter name:
+        <input id="userEnter" type="text" style="width:120px;" tabindex="0" value="" title="Enter the object\'s name here. Avoid application specific names, codes, long descriptions. Use a name you think other people would agree in using." />
+      </div>
+    </div>
+  </div>
+
+
+
+<div style="height:30px">
+</div>
+
+
+
+
+<div style="margin-left: 50px">
+<div id="jstree" >
+</div>
+<button style="margin-top: 10px">Begin</button>
+</div>
+<!-- 4 include the jQuery library -->
+
+<!-- 5 include the minified jstree source -->
+<script src="dist/jstree.min.js"></script>
+<script>
+$(function () {
+  $('#changeuser').attr("onclick","javascript:show_enterUserNameDIV(); return false;");
+  $('#userEnter').attr("onkeyup","javascript:var c; if(event.keyCode)c=event.keyCode; if(event.which)c=event.which; if(c==13 || c==27) changeAndDisplayUserName(c);");
+});
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

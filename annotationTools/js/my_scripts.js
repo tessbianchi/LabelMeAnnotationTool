@@ -83,8 +83,29 @@ function ShowNextImage() {
   // Get a new image and reset URL to reflect new image:
   if (video_mode) main_media.GetFileInfo().SetURL(document.URL);
   else {
-    main_media.GetFileInfo().FetchImage();
-    LoadNewMedia();
+    main_media.GetFileInfo().FetchImage(false);
+    // LoadNewMedia();
+  }
+}
+
+// This function gets called when the user clicks on the "Next image" button.
+function ShowPrevImage() {
+  if(wait_for_input) return WaitForInput();
+  if(draw_anno) {
+    alert("Need to close current polygon first.");
+    return;
+  }
+
+  //$('#main_media').remove();
+
+  // Remove the object list:
+  RemoveObjectList();
+
+  // Get a new image and reset URL to reflect new image:
+  if (video_mode) main_media.GetFileInfo().SetURL(document.URL);
+  else {
+    main_media.GetFileInfo().FetchImage(true);
+    // LoadNewMedia();
   }
 }
 
@@ -162,6 +183,7 @@ function GetTimeStamp() {
   if(req_anno.status==200) return req_anno.responseText;
   return '';
 }
+
 
 
 // Set object list choices for points and lines:

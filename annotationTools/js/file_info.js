@@ -18,7 +18,7 @@ function file_info() {
     this.dir_name = null;
     this.im_name = null;
     this.collection = 'LabelMe';
-    this.mode = 'i'; //initialize to picture mode
+    this.mode = 'f'; //initialize to picture mode
     this.hitId = null;
     this.assignmentId = null;
     this.workerId = null;
@@ -34,6 +34,7 @@ function file_info() {
     */
     this.ParseURL = function () {
         var labelme_url = document.URL;
+        console.log("labell " + labelme_url)
         var idx = labelme_url.indexOf('?');
         if((idx != -1) && (this.page_in_use == 0)) {
             this.page_in_use = 1;
@@ -169,6 +170,8 @@ function file_info() {
                 }
                 par_str = par_str.substring(idx+1,par_str.length);
             } while(idx != -1);
+            console.log("dirname1s" + labelme_url)
+            console.log("dirname1s" + this.dir_name)
             if (video_mode) return 1;
             if((!this.dir_name) || (!this.im_name)) return this.SetURL(labelme_url);
             
@@ -220,6 +223,7 @@ function file_info() {
             }
         }
         else {
+            console.log("fuqq " + labelme_url)
             return this.SetURL(labelme_url);
         }
         
@@ -249,6 +253,11 @@ function file_info() {
     /** Sets image name */
     this.SetImName = function (newImName){
         this.im_name = newImName;
+    };
+
+    /** Sets directory name */
+    this.SetDirName = function (new_dir_name) {
+        this.dir_name = new_dir_name;
     };
     
     /** Gets image path */
@@ -314,32 +323,66 @@ function file_info() {
     };
     
     /** Fetch next image. */
-    this.FetchImage = function () {
+    this.FetchImage = function (back) {
+        console.log("FETCHING BETCHING");
+        console.log(this.mode);
+        console.log(this.collection);
+        console.log(this.dir_name);
+        console.log(this.im_name);
         var url = 'annotationTools/perl/fetch_image.cgi?mode=' + this.mode + '&username=' + username + '&collection=' + this.collection.toLowerCase() + '&folder=' + this.dir_name + '&image=' + this.im_name;
+        console.log(url + "fetch")
         var im_req;
-        // branch for native XMLHttpRequest object
-        if (window.XMLHttpRequest) {
-            im_req = new XMLHttpRequest();
-            im_req.open("GET", url, false);
-            im_req.send('');
+        console.log(url);
+        dir = window.localStorage.dir;
+        images = window.localStorage.images.split(",");
+        index = window.localStorage.index;
+        console.log(dir);
+        console.log(images);
+        console.log(index);
+        if(back && index > 0)
+        {
+            --index;
+            window.localStorage.index = index;
         }
-        else if (window.ActiveXObject) {
-            im_req = new ActiveXObject("Microsoft.XMLHTTP");
-            if (im_req) {
-                im_req.open("GET", url, false);
-                im_req.send('');
-            }
+        else if(!back && index < images.length - 1)
+        {
+            ++index;
+            window.localStorage.index = index;
         }
-        if(im_req.status==200) {
-            this.dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
-            this.im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
-        }
-        else {
-            alert('Fatal: there are problems with fetch_image.cgi');
-        }
+        this.dir_name = dir
+        this.im_name = images[index];
+
+        var c = "http://milturks.com/label/tool.html" + '?folder=' + dir + "&image=" + images[index];
+        window.location.href = c;
+        
+        // // branch for native XMLHttpRequest object
+        // if (window.XMLHttpRequest) {
+        //     im_req = new XMLHttpRequest();
+        //     im_req.open("GET", url, false);
+        //     im_req.send('');
+        // }
+        // else if (window.ActiveXObject) {
+        //     im_req = new ActiveXObject("Microsoft.XMLHTTP");
+        //     if (im_req) {
+        //         im_req.open("GET", url, false);
+        //         im_req.send('');
+        //     }
+        // }
+        // console.log(im_req);
+        // if(im_req.status==200) {
+        //     console.log("-----------200000-------------")
+        //     this.dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
+        //     this.im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
+        // }
+        // else {
+        //     alert('Fatal: there are problems with fetch_image.cgi');
+        // }
     };
+
     this.PreFetchImage = function () {
         var url = 'annotationTools/perl/fetch_image.cgi?mode=' + this.mode + '&username=' + username + '&collection=' + this.collection.toLowerCase() + '&folder=' + this.dir_name + '&image=' + this.im_name;
+        console.log(url + "prefetch")
+
         var im_req;
         // branch for native XMLHttpRequest object
         if (window.XMLHttpRequest) {
@@ -355,6 +398,7 @@ function file_info() {
 	console.log('prefetching')
 	im_req.onload = function(e){
 		if(im_req.status==200) {
+            console.log(im_req.responseXML)
 		    dir_name = im_req.responseXML.getElementsByTagName("dir")[0].firstChild.nodeValue;
 		    im_name = im_req.responseXML.getElementsByTagName("file")[0].firstChild.nodeValue;
 		    path =  'Images/' + dir_name + '/' + im_name;
